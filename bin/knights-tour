@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby -w
+
+require 'rubygems'
+require 'trollop'
+
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
+
+require 'knights-tour'
+
+############################################################################
+# Parse the command line arguments and invoke appropriate action.
+
+include KnightsTour
+
+options = Trollop::options do
+  version Meta.version
+
+  banner <<-EOS
+A proram that attempts to find a solution to the Knight's Tour problem.
+
+Usage:
+
+  #{File.basename($0)} [OPTIONS] [DIMENSION]
+
+Options:
+EOS
+
+  opt :verbose, "Show additional information"
+  opt :debug,   "Show even more additional information"
+end
+
+# defaults
+application_params = {
+  :log_level => Logger::WARN,
+  :dimension => 8
+}
+
+application_params[:dimension] = ARGV.shift unless ARGV.empty?
+application_params[:log_level] = Logger::INFO if options[:verbose]
+application_params[:log_level] = Logger::DEBUG if options[:debug]
+
+app = nil
+
+begin
+  app = Application.new(application_params[:dimension])
+rescue ArgumentError
+  Trollop::die "the dimension argument must be integer, greater than zero"
+end
+
+app.log_level = application_params[:log_level]
+$stdout.puts app.solve

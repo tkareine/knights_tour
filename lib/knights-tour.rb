@@ -24,14 +24,14 @@ module KnightsTour
   class Application
     attr_reader :dimension
 
-    def initialize(dimension, log_output = $stdout)
+    def initialize(dimension)
       dimension = dimension.to_i
       raise ArgumentError unless dimension > 0
 
       @dimension = dimension
       @position = [1, 1]
 
-      @logger = Logger.new(log_output)
+      @logger = Logger.new($stdout)
     end
 
     def log_level
@@ -43,7 +43,37 @@ module KnightsTour
     end
 
     def solve
-      raise StandardError, "Implement me!"
+      StringResult.new(solve_tour)
+    end
+
+    private
+
+    def solve_tour
+      [[1]]   # TODO: do the implementation
+    end
+  end
+
+  class StringResult
+    def initialize(result)
+      @result = result.to_a
+    end
+
+    def to_s
+      output = ""
+
+      @result.each do |row|
+        output += separator(row.size)
+        row_output = row.map { |step| "%2s" % step }.join("|")
+        output += "|#{row_output}|\n"
+      end
+
+      output += separator(@result[0].size)
+    end
+
+    private
+
+    def separator(length)
+      "+--" * length + "+\n"
     end
   end
 end

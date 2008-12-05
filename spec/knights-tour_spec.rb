@@ -12,9 +12,8 @@ describe Application do
     lambda { Application.new(8)  }.should_not raise_error(ArgumentError)
   end
 
-  it "should accept dimension of one" do
+  it "should solve dimension of 1" do
     result = Application.new(1).solve
-
     result.to_s.should == <<-END
 +--+
 | 1|
@@ -22,20 +21,9 @@ describe Application do
     END
   end
 
-  it "should accept dimension of n" do
-    result = Application.new(1).solve
-
-    result.to_s.should == <<-END
-+--+--+--+--+
-| 1| 4|16| 9|
-+--+--+--+--+
-| 8|12| 6| 3|
-+--+--+--+--+
-| 5| 2|10|17|
-+--+--+--+--+
-|11| 7|13|20|
-+--+--+--+--+
-    END
+  it "should solve dimension of 4" do
+    result = Application.new(4).solve
+    result.to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\w*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
   end
 end
 

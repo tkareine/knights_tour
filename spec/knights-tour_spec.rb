@@ -21,6 +21,22 @@ describe Application do
 +--+
     END
   end
+
+  it "should accept dimension of n" do
+    result = Application.new(1).solve
+
+    result.to_s.should == <<-END
++--+--+--+--+
+| 1| 4|16| 9|
++--+--+--+--+
+| 8|12| 6| 3|
++--+--+--+--+
+| 5| 2|10|17|
++--+--+--+--+
+|11| 7|13|20|
++--+--+--+--+
+    END
+  end
 end
 
 describe StringResult, "with trivial length" do

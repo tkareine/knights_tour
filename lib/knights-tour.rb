@@ -1,5 +1,3 @@
-require 'logger'
-
 module KnightsTour
   module Meta #:nodoc:
     module VERSION #:nodoc:
@@ -22,34 +20,87 @@ module KnightsTour
   end
 
   class Application
-    attr_reader :dimension
+    ## as [x, y] pairs
+    LEGAL_STEPS = [ [-2, -1], [-1, -2], [-2,  1], [-1,  2],
+                    [ 1,  2], [ 2,  1], [ 1, -2], [ 1, -2] ]
+
+    START_POSITION = [0, 0]
 
     def initialize(dimension)
       dimension = dimension.to_i
       raise ArgumentError unless dimension > 0
 
-      @dimension = dimension
-      @position = [1, 1]
+      @grid = Array.new(dimension) { Array.new(dimension, nil) }
+      @position = START_POSITION
+      @num_steps = 0
 
-      @logger = Logger.new($stdout)
-    end
-
-    def log_level
-      @logger.level
-    end
-
-    def log_level=(level)
-      @logger.level = level
+      @dimension_range = (0...dimension)
     end
 
     def solve
-      StringResult.new(solve_tour)
+      traverse_to(@position)
+      StringResult.new(traverse)
     end
 
     private
 
-    def solve_tour
-      [[1]]   # TODO: do the implementation
+    def traverse
+      #puts StringResult.new(@grid)   # debug
+
+      unless grid_is_traversed
+        next_positions = find_next_positions
+        preferred_positions = find_preferred_next_positions(next_positions)
+
+        unless preferred_positions.empty?
+          next_position = choose_position(preferred_positions)
+        else
+          next_position = choose_position(next_positions)
+        end
+
+        traverse_to(next_position)
+
+        traverse
+      else
+        @grid
+      end
+    end
+
+    def choose_position(positions)
+      positions[rand(positions.size)]
+    end
+
+    def grid_is_traversed
+      @grid.find { |row| row.include?(nil) } == nil
+    end
+
+    def traverse_to(new_position)
+      @num_steps += 1
+      @position = new_position
+      @grid[@position[0]][@position[1]] = @num_steps
+    end
+
+    def find_next_positions
+      positions = LEGAL_STEPS.map { |step| find_position(@position, step) }
+      positions.reject { |pos| pos.nil? }
+    end
+
+    def find_preferred_next_positions(next_positions)
+      # prefer positions where we have not visited yet
+      next_positions.reject do |pos|
+        @grid[pos[0]][pos[1]] != nil
+      end
+    end
+
+    def find_position(from, step)
+      x_pos = from[0] + step[0]
+      y_pos = from[1] + step[1]
+
+      if (@dimension_range.include?(x_pos) and
+          @dimension_range.include?(y_pos))
+        [x_pos, y_pos]
+      else
+        nil
+      end
     end
   end
 

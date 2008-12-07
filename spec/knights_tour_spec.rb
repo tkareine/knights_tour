@@ -22,15 +22,25 @@ describe Application do
   end
 
   it "should solve dimension of 4" do
+    srand 42
     result = Application.new(4).solve
-    result.to_s.should =~ /^(\+--+\+--+\+--+\+--+\+\n(\|\s+\d+){4}\|\n){4}\+--+\+--+\+--+\+--+\+\n$/
+    result.to_s.should == <<-END
++---+---+---+---+
+|  1| 14|  5| 10|
++---+---+---+---+
+|  6| 17|  2| 19|
++---+---+---+---+
+| 13|  4| 15|  8|
++---+---+---+---+
+| 16|  7| 18|  3|
++---+---+---+---+
+    END
   end
 
   it "after solving, should cache the result" do
     app = Application.new(4)
     result = []
     result << app.solve
-    result[0].to_s.should =~ /^(\+--+\+--+\+--+\+--+\+\n(\|\s+\d+){4}\|\n){4}\+--+\+--+\+--+\+--+\+\n$/
     result << app.solve
     result[0].should == result[1]
   end

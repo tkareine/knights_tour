@@ -23,20 +23,30 @@ Usage:
   #{File.basename($0)} [OPTIONS] [DIMENSION]
 
 Options:
-EOS
+  EOS
+
+  opt :position, "Set start position (default: 0,0)",
+      :type     => :string,
+      :required => false
 end
 
 # defaults
-application_params = {
-  :dimension => 8
+app_params = {
+  :dimension => 8,
+  :position  => [0, 0]
 }
 
-application_params[:dimension] = ARGV.shift unless ARGV.empty?
-
 begin
-  app = Application.new(application_params[:dimension])
-rescue ArgumentError
-  Trollop::die "the dimension argument must be integer, greater than zero"
+  app_params[:dimension] = ARGV.shift.to_i unless ARGV.empty?
+
+  if options[:position]
+    position = options[:position].split(',')
+    app_params[:position] = [position[0].to_i, position[1].to_i]
+  end
+
+  app = Application.new(app_params[:dimension], app_params[:position])
+rescue ArgumentError => e
+  Trollop::die e.to_s
 end
 
 $stdout.puts app.solve

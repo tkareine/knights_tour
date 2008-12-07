@@ -20,19 +20,27 @@ module KnightsTour
   end
 
   class Application
-    START_POSITION = [0, 0]
-
-    def initialize(dimension)
+    def initialize(dimension, start_position = [0, 0])
       dimension = dimension.to_i
-      raise ArgumentError unless dimension > 0
+      unless dimension > 0
+        raise ArgumentError, "Dimension must be integer, greater than zero"
+      end
+
+      start_position = start_position.to_a
+      if ((start_position.size != 2) or
+          !(0...dimension).include?(start_position[0]) or
+          !(0...dimension).include?(start_position[1]))
+        raise ArgumentError, "Invalid start position value"
+      end
 
       @dimension = dimension
+      @start_position = start_position
       @solution = nil
     end
 
     def solve
       unless @solution
-        grid = Grid.new(@dimension, START_POSITION)
+        grid = Grid.new(@dimension, @start_position)
         @solution = StringResult.new(grid.traverse)
       end
       @solution

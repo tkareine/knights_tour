@@ -25,6 +25,15 @@ describe Application do
     result = Application.new(4).solve
     result.to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\s*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
   end
+
+  it "after solving, should cache the result" do
+    app = Application.new(4)
+    result = []
+    result << app.solve
+    result[0].to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\s*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
+    result << app.solve
+    result[0].should == result[1]
+  end
 end
 
 describe StringResult, "with trivial length" do

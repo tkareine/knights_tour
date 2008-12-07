@@ -20,34 +20,45 @@ module KnightsTour
   end
 
   class Application
-    ## as [x, y] pairs
-    LEGAL_STEPS = [ [-2, -1], [-1, -2], [-2,  1], [-1,  2],
-                    [ 1,  2], [ 2,  1], [ 1, -2], [ 1, -2] ]
-
     START_POSITION = [0, 0]
 
     def initialize(dimension)
       dimension = dimension.to_i
       raise ArgumentError unless dimension > 0
 
-      @grid = Array.new(dimension) { Array.new(dimension, nil) }
-      @position = START_POSITION
-      @num_steps = 0
-
-      @dimension_range = (0...dimension)
+      @dimension = dimension
+      @solution = nil
     end
 
     def solve
-      traverse_to(@position)
-      StringResult.new(traverse)
+      unless @solution
+        grid = Grid.new(@dimension, START_POSITION)
+        @solution = StringResult.new(grid.traverse)
+      end
+      @solution
+    end
+  end
+
+  class Grid
+    ## as [x, y] pairs
+    LEGAL_STEPS = [ [-2, -1], [-1, -2], [-2,  1], [-1,  2],
+                    [ 1,  2], [ 2,  1], [ 1, -2], [ 1, -2] ]
+
+    def initialize(dimension, start_position)
+      @grid = Array.new(dimension) { Array.new(dimension, nil) }
+      @num_steps = 0
+      @dimension_range = (0...dimension)
+      traverse_to(start_position)
     end
 
-    private
+    def is_traversed
+      @grid.find { |row| row.include?(nil) } == nil
+    end
 
     def traverse
       #puts StringResult.new(@grid)   # debug
 
-      unless grid_is_traversed
+      unless is_traversed
         next_positions = find_next_positions
         preferred_positions = find_preferred_next_positions(next_positions)
 
@@ -65,18 +76,16 @@ module KnightsTour
       end
     end
 
-    def choose_position(positions)
-      positions[rand(positions.size)]
-    end
-
-    def grid_is_traversed
-      @grid.find { |row| row.include?(nil) } == nil
-    end
+    private
 
     def traverse_to(new_position)
       @num_steps += 1
       @position = new_position
       @grid[@position[0]][@position[1]] = @num_steps
+    end
+
+    def choose_position(positions)
+      positions[rand(positions.size)]
     end
 
     def find_next_positions

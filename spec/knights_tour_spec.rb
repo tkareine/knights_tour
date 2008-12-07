@@ -37,7 +37,7 @@ describe Application do
     END
   end
 
-  it "after solving, should cache the result" do
+  it "should cache the result" do
     app = Application.new(4)
     result = []
     result << app.solve

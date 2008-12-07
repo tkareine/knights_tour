@@ -23,14 +23,14 @@ describe Application do
 
   it "should solve dimension of 4" do
     result = Application.new(4).solve
-    result.to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\s*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
+    result.to_s.should =~ /^(\+--+\+--+\+--+\+--+\+\n(\|\s+\d+){4}\|\n){4}\+--+\+--+\+--+\+--+\+\n$/
   end
 
   it "after solving, should cache the result" do
     app = Application.new(4)
     result = []
     result << app.solve
-    result[0].to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\s*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
+    result[0].to_s.should =~ /^(\+--+\+--+\+--+\+--+\+\n(\|\s+\d+){4}\|\n){4}\+--+\+--+\+--+\+--+\+\n$/
     result << app.solve
     result[0].should == result[1]
   end
@@ -57,13 +57,13 @@ describe StringResult, "with non-trivial length" do
 
   it "should show the result correctly" do
     @result.to_s.should == <<-END
-+--+--+--+
-| 1| 2| 3|
-+--+--+--+
-|42|56|69|
-+--+--+--+
-| 7| 8| 9|
-+--+--+--+
++---+---+---+
+|  1|  2|  3|
++---+---+---+
+| 42| 56| 69|
++---+---+---+
+|  7|  8|  9|
++---+---+---+
     END
   end
 end

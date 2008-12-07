@@ -116,24 +116,29 @@ module KnightsTour
   class StringResult
     def initialize(result)
       @result = result.to_a
+      @field_width = find_last_step.to_s.length + 1
     end
 
     def to_s
       output = ""
 
       @result.each do |row|
-        output += separator(row.size)
-        row_output = row.map { |step| "%2s" % step }.join("|")
+        output += separator
+        row_output = row.map { |step| "%#{@field_width}s" % step }.join("|")
         output += "|#{row_output}|\n"
       end
 
-      output += separator(@result[0].size)
+      output += separator
     end
 
     private
 
-    def separator(length)
-      "+--" * length + "+\n"
+    def separator
+      ("+" + "-" * @field_width) * @result[0].size + "+\n"
+    end
+
+    def find_last_step
+      @result.map { |row| row.max }.max
     end
   end
 end

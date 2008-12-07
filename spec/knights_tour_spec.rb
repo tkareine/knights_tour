@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
-require 'knights-tour'
+require 'knights_tour'
 
 include KnightsTour
 

@@ -5,7 +5,7 @@ require 'trollop'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
-require 'knights-tour'
+require 'knights_tour'
 
 ############################################################################
 # Parse the command line arguments and invoke appropriate action.

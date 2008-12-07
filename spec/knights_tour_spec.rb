@@ -23,7 +23,7 @@ describe Application do
 
   it "should solve dimension of 4" do
     result = Application.new(4).solve
-    result.to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\w*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
+    result.to_s.should =~ /^(\+--\+--\+--\+--\+\n(\|\s*\d+){4}\|\n){4}\+--\+--\+--\+--\+\n$/
   end
 end
 

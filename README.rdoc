@@ -5,7 +5,8 @@ A program that attempts to find a solution to the
 I was inspired to do this by finding
 {a Python implementation}[http://ttsiodras.googlepages.com/knightstour.html].
 
-At present, the program's algorithm to solve the problem is trivial and slow.
+At present, the program's algorithm for solving the problem is trivial and
+inefficient.
 
 == Installation
 
@@ -13,14 +14,18 @@ Use git to get the latest version:
 
   $ git clone git://github.com/tuomas/knights_tour.git
 
+Ruby gem "trollop" is required to be installed in order to run the program.
+
 == Usage
 
-Change the working directory of your command line shell into the project's root
-directory and enter
+Change the working directory of your command line shell into the project's
+root directory and enter
 
   $ ./bin/knights_tour
 
-If the program finds a solution, it displays a result similar to the following:
+The command attempts to solve the problem on a board of size 8x8, the knight
+located initially at position 0,0 (the top-left corner). If the program
+finds a solution, it displays a result similar to the following:
 
   +---+---+---+---+---+---+---+---+
   |  1| 38| 55| 34|  3| 36| 19| 22|
@@ -40,16 +45,19 @@ If the program finds a solution, it displays a result similar to the following:
   | 50| 43| 30| 61| 14| 63| 28|  7|
   +---+---+---+---+---+---+---+---+
 
-For options, see
+The size of the board and the start position of the knight are configurable.
+For all the options, see
 
   $ ./bin/knights_tour -h
 
 == Contacting
 
-Please send comments, suggestions, bugs, or patches by email to Tuomas
-Kareinen < tkareine (at) gmail (dot) com >.
+Please send feedback by email to Tuomas Kareinen < tkareine (at) gmail (dot)
+com >.
 
 == Legal notes
+
+This software is licensed under the terms of the "MIT license":
 
 Copyright (c) 2008 Tuomas Kareinen.
 

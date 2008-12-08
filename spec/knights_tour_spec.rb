@@ -5,28 +5,43 @@ require 'knights_tour'
 include KnightsTour
 
 describe Application do
-  it "should accept dimensions greater than zero" do
-    lambda { Application.new(-1) }.should raise_error(ArgumentError)
-    lambda { Application.new(0)  }.should raise_error(ArgumentError)
-    lambda { Application.new(1)  }.should_not raise_error(ArgumentError)
-    lambda { Application.new(8)  }.should_not raise_error(ArgumentError)
+  it "should accept valid board size" do
+    lambda { Application.new(:size => -1)  }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => 0)   }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => 1)   }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => "1") }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [-1, -1]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [-1, 0])  }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [0, -1])  }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [0, 0])   }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [0, 1])   }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 0])   }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [3, 4]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [5, 5]) }.should_not raise_error(ArgumentError)
   end
 
-  it "should accept non-default start positions" do
-    lambda { Application.new(1, [-1,  0]) }.should raise_error(ArgumentError)
-    lambda { Application.new(1, [ 0, -1]) }.should raise_error(ArgumentError)
-    lambda { Application.new(1, [-1, -1]) }.should raise_error(ArgumentError)
-    lambda { Application.new(1, [ 1,  1]) }.should raise_error(ArgumentError)
-    lambda { Application.new(4, [ 3,  4]) }.should raise_error(ArgumentError)
-    lambda { Application.new(1, [ 0,  0]) }.should_not raise_error(ArgumentError)
-    lambda { Application.new(4, [ 0,  0]) }.should_not raise_error(ArgumentError)
-    lambda { Application.new(4, [ 1,  0]) }.should_not raise_error(ArgumentError)
-    lambda { Application.new(4, [ 3,  3]) }.should_not raise_error(ArgumentError)
-    lambda { Application.new(8, [ 7,  6]) }.should_not raise_error(ArgumentError)
+  it "should accept valid non-default start positions" do
+    lambda { Application.new(:size => [1, 1], :start_at => -1) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1], :start_at => [ 0,  1]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1], :start_at => [ 1,  0]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1], :start_at => [ 1,  1]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1], :start_at => [ 3,  4]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [3, 7], :start_at => [ 4,  2]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [3, 7], :start_at => [ 2,  7]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [3, 7], :start_at => [ 3,  7]) }.should raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 1], :start_at => [ 0,  0]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [1, 2], :start_at => [ 0,  1]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [2, 1], :start_at => [ 1,  0]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [2, 2], :start_at => [ 0,  0]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [2, 2], :start_at => [ 1,  1]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [3, 7], :start_at => [ 2,  4]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [5, 5], :start_at => [ 4,  4]) }.should_not raise_error(ArgumentError)
+    lambda { Application.new(:size => [8, 8], :start_at => [ 7,  6]) }.should_not raise_error(ArgumentError)
   end
 
-  it "should solve dimension of 1" do
-    result = Application.new(1).solve
+  it "should solve a board with size 1,1" do
+    result = Application.new(:size => [1, 1]).solve
     result.to_s.should == <<-END
 +--+
 | 1|
@@ -34,8 +49,8 @@ describe Application do
     END
   end
 
-  it "should solve dimension of 5" do
-    result = Application.new(5).solve
+  it "should solve a board with size 5,5" do
+    result = Application.new(:size => [5, 5]).solve
     result.to_s.should == <<-END
 +---+---+---+---+---+
 |  1| 20| 17| 12|  3|
@@ -51,8 +66,8 @@ describe Application do
     END
   end
 
-  it "should solve dimension of 5, in start position 2,2" do
-    result = Application.new(5, [2, 2]).solve
+  it "should solve a board with size of 5,5, in start position 2,2" do
+    result = Application.new(:size => [5, 5], :start_at => [2, 2]).solve
     result.to_s.should == <<-END
 +---+---+---+---+---+
 | 21| 12|  7|  2| 19|
@@ -68,8 +83,21 @@ describe Application do
     END
   end
 
+  it "should solve a board with size of 3,7, in start position 2,4" do
+    result = Application.new(:size => [3, 7], :start_at => [2, 4]).solve
+    result.to_s.should == <<-END
++---+---+---+---+---+---+---+
+| 11| 14| 17| 20|  3|  8|  5|
++---+---+---+---+---+---+---+
+| 16| 21| 12|  9|  6| 19|  2|
++---+---+---+---+---+---+---+
+| 13| 10| 15| 18|  1|  4|  7|
++---+---+---+---+---+---+---+
+    END
+  end
+
   it "should cache the result" do
-    app = Application.new(1)
+    app = Application.new(:size => [1, 1])
     result = []
     result << app.solve
     result << app.solve
@@ -83,7 +111,7 @@ describe StringResult do
   end
 
   it "should show the result correctly for a trivial result" do
-    field = Field.new(1, [0, 0])
+    field = Field.new([1, 1], [0, 0])
     field.instance_variable_set(:@grid, [[1]])
     result = StringResult.new(field)
     result.to_s.should == <<-END
@@ -94,8 +122,8 @@ describe StringResult do
   end
 
   it "should show the result correctly for a non-trivial result" do
-    # this is not a solvable dimension
-    field = Field.new(3, [0, 0])
+    # in reality, this is not a solvable board size
+    field = Field.new([3, 3], [0, 0])
     field.instance_variable_set(:@grid, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
     StringResult.new(field).to_s.should == <<-END
 +----+----+----+

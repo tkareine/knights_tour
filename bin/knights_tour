@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -w
 
 require 'rubygems'
 require 'trollop'
@@ -7,8 +7,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 
 require 'knights_tour'
 
-############################################################################
-# Parse the command line arguments and invoke appropriate action.
+# Parse the command line arguments and invoke the application.
 
 include KnightsTour
 
@@ -20,31 +19,24 @@ A proram that attempts to find a solution to the Knight's Tour problem.
 
 Usage:
 
-  #{File.basename($0)} [OPTIONS] [DIMENSION]
+  #{File.basename($0)} [OPTIONS] [SIZE]
+
+Where SIZE (default: 8,8) sets the size of the board to ROWS x COLS.
 
 Options:
   EOS
 
-  opt :position, "Set start position (default: 0,0)",
+  opt :start_at, "Set the initial position of the knight (default: 0,0)",
       :type     => :string,
       :required => false
 end
 
-# defaults
-app_params = {
-  :dimension => 8,
-  :position  => [0, 0]
-}
-
 begin
-  app_params[:dimension] = ARGV.shift.to_i unless ARGV.empty?
+  app_params = {}
+  app_params[:size]     = ARGV.shift unless ARGV.empty?
+  app_params[:start_at] = options[:start_at] if options[:start_at]
 
-  if options[:position]
-    position = options[:position].split(',')
-    app_params[:position] = [position[0].to_i, position[1].to_i]
-  end
-
-  app = Application.new(app_params[:dimension], app_params[:position])
+  app = Application.new(app_params)
 rescue ArgumentError => e
   Trollop::die e.to_s
 end

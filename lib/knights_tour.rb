@@ -2,8 +2,8 @@ module KnightsTour
   module Meta #:nodoc:
     module VERSION #:nodoc:
       MAJOR = 0
-      MINOR = 0
-      TINY  = 2
+      MINOR = 1
+      TINY  = 0
 
       def self.to_s
         [ MAJOR, MINOR, TINY ].join('.')
@@ -12,7 +12,7 @@ module KnightsTour
 
     COPYRIGHT = 'Copyright (c) Tuomas Kareinen'
 
-    LICENSE = 'Licensed under the terms of MIT license.'
+    LICENSE = 'Licensed under the terms of the "MIT license". See README.rdoc.'
 
     def self.version
       "#{File.basename($0)} #{Meta::VERSION}\n#{Meta::COPYRIGHT}\n#{Meta::LICENSE}"
@@ -20,33 +20,50 @@ module KnightsTour
   end
 
   class Application
-    def initialize(dimension, start_position = [0, 0])
-      dimension = dimension.to_i
-      unless dimension > 0
-        raise ArgumentError, "Dimension must be integer, greater than zero"
-      end
-
-      start_position = start_position.to_a
-      if ((start_position.size != 2) or
-          !(0...dimension).include?(start_position[0]) or
-          !(0...dimension).include?(start_position[1]))
-        raise ArgumentError, "Invalid start position value"
-      end
-
-      @dimension = dimension
-      @start_position = start_position
+    def initialize(params = {})
+      @size = parse_size(params[:size] || [8, 8])
+      @start_at = parse_start_position(params[:start_at] || [0, 0])
       @solution = nil
     end
 
     def solve
       unless @solution
-        field = Field.new(@dimension, @start_position)
+        field = Field.new(@size, @start_at)
         @solution = StringResult.new(traverse(field))
       end
       @solution
     end
 
     private
+
+    def parse_pair(param)
+      unless param.is_a?(Array)
+        param = param.to_s.split(',')
+      end
+      [param[0].to_i, param[1].to_i]
+    end
+
+    def parse_size(size)
+      size = parse_pair(size)
+      unless size[0] > 0 && size[1] > 0
+        raise ArgumentError,
+              "Board size must be a pair of positive (non-zero) " \
+              "integers, separated by a comma"
+      end
+      size
+    end
+
+    def parse_start_position(start_position)
+      start_position = parse_pair(start_position)
+      unless (0...@size[0]).include?(start_position[0]) &&
+             (0...@size[1]).include?(start_position[1])
+        raise ArgumentError,
+              "Initial position must be a pair of positive integers " \
+              "within the size limits of the board, separated by a comma " \
+              "(for example, 0,5 is acceptable for board size 6,6)"
+      end
+      start_position
+    end
 
     def traverse(field)
       #puts StringResult.new(field)  # debug
@@ -67,10 +84,6 @@ module KnightsTour
         field
       end
     end
-
-    def choose_position(positions)
-      positions[rand(positions.size)]
-    end
   end
 
   class Field
@@ -80,10 +93,10 @@ module KnightsTour
 
     attr_reader :grid, :num_steps
 
-    def initialize(dimension, start_position)
-      @grid = Array.new(dimension) { Array.new(dimension, 0) }
+    def initialize(size, start_at)
+      @grid = Array.new(size[0]) { Array.new(size[1], 0) }
       @num_steps = 0
-      traverse_to(start_position)
+      traverse_to(start_at)
     end
 
     def initialize_copy(other)
@@ -103,16 +116,15 @@ module KnightsTour
     end
 
     def find_next_positions_available
-      positions = LEGAL_STEPS.map { |step| find_position(@position, step) }
+      positions = LEGAL_STEPS.map { |step| position_after_step(@position, step) }
       positions.reject { |pos| pos.nil? || (@grid[pos[0]][pos[1]] > 0) }
     end
 
-    def find_position(from, step)
+    def position_after_step(from, step)
       x_pos = from[0] + step[0]
       y_pos = from[1] + step[1]
 
-      if ((0...@grid.size).include?(x_pos) and
-          (0...@grid.size).include?(y_pos))
+      if (0...@grid.size).include?(x_pos) && (0...@grid[0].size).include?(y_pos)
         [x_pos, y_pos]
       else
         nil
@@ -150,8 +162,6 @@ module KnightsTour
 
       output += separator_str
     end
-
-    private
 
     def separator(field_width, cols)
       ("+" + "-" * field_width) * cols + "+\n"

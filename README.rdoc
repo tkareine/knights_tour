@@ -5,7 +5,7 @@ A program that attempts to find a solution to the
 I was inspired to do this by finding
 {a Python implementation}[http://ttsiodras.googlepages.com/knightstour.html].
 
-The current algorithm to solve the problem is trivial and slow.
+At present, the program's algorithm to solve the problem is trivial and slow.
 
 == Installation
 

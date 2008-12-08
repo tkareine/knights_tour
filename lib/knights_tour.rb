@@ -105,7 +105,8 @@ module KnightsTour
     end
 
     def traversed?
-      @grid.find { |row| row.include?(0) } == nil
+      last_step = grid.size * grid[0].size
+      @num_steps == last_step
     end
 
     def traverse_to(new_position)

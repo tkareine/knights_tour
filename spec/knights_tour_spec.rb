@@ -34,48 +34,42 @@ describe Application do
     END
   end
 
-  it "should solve dimension of 4, in start position 0,0" do
-    srand 42
-    result = Application.new(4).solve
+  it "should solve dimension of 5" do
+    result = Application.new(5).solve
     result.to_s.should == <<-END
-+---+---+---+---+
-|  1| 14|  5| 10|
-+---+---+---+---+
-|  6| 17|  2| 19|
-+---+---+---+---+
-| 13|  4| 15|  8|
-+---+---+---+---+
-| 16|  7| 18|  3|
-+---+---+---+---+
++---+---+---+---+---+
+|  1| 20| 17| 12|  3|
++---+---+---+---+---+
+| 16| 11|  2|  7| 18|
++---+---+---+---+---+
+| 21| 24| 19|  4| 13|
++---+---+---+---+---+
+| 10| 15|  6| 23|  8|
++---+---+---+---+---+
+| 25| 22|  9| 14|  5|
++---+---+---+---+---+
     END
   end
 
-  it "should solve dimension of 8, in start position 6,7" do
-    srand 42
-    result = Application.new(8, [6, 7]).solve
+  it "should solve dimension of 5, in start position 2,2" do
+    result = Application.new(5, [2, 2]).solve
     result.to_s.should == <<-END
-+---+---+---+---+---+---+---+---+
-| 46| 61| 28| 31| 88| 63| 58| 33|
-+---+---+---+---+---+---+---+---+
-| 29|  8| 89| 62| 59| 34| 87| 64|
-+---+---+---+---+---+---+---+---+
-| 42| 47| 60| 55| 90| 65| 70| 57|
-+---+---+---+---+---+---+---+---+
-|  7| 54| 81| 12| 67| 72| 19| 22|
-+---+---+---+---+---+---+---+---+
-| 78| 41| 48|  5| 80| 91| 66| 71|
-+---+---+---+---+---+---+---+---+
-| 53|  6| 37| 24| 95| 16| 73| 18|
-+---+---+---+---+---+---+---+---+
-| 40| 77| 96| 51| 38| 75| 94|  1|
-+---+---+---+---+---+---+---+---+
-| 97| 52| 39| 76| 93|  2| 17| 74|
-+---+---+---+---+---+---+---+---+
++---+---+---+---+---+
+| 21| 12|  7|  2| 19|
++---+---+---+---+---+
+|  6| 17| 20| 13|  8|
++---+---+---+---+---+
+| 11| 22|  1| 18|  3|
++---+---+---+---+---+
+| 16|  5| 24|  9| 14|
++---+---+---+---+---+
+| 23| 10| 15|  4| 25|
++---+---+---+---+---+
     END
   end
 
   it "should cache the result" do
-    app = Application.new(4, [0, 0])
+    app = Application.new(1)
     result = []
     result << app.solve
     result << app.solve
@@ -83,34 +77,34 @@ describe Application do
   end
 end
 
-describe StringResult, "with trivial length" do
-  before(:each) do
-    @result = StringResult.new([[1]])
+describe StringResult do
+  it "should show the result correctly for a failed result" do
+    StringResult.new(nil).to_s.should == "No solution found."
   end
 
-  it "should show the result correctly" do
-    @result.to_s.should == <<-END
+  it "should show the result correctly for a trivial result" do
+    field = Field.new(1, [0, 0])
+    field.instance_variable_set(:@grid, [[1]])
+    result = StringResult.new(field)
+    result.to_s.should == <<-END
 +--+
 | 1|
 +--+
     END
   end
-end
 
-describe StringResult, "with non-trivial length" do
-  before(:each) do
-    @result = StringResult.new([[1, 2, 3], [42, 56, 69], [7, 8, 9]])
-  end
-
-  it "should show the result correctly" do
-    @result.to_s.should == <<-END
-+---+---+---+
-|  1|  2|  3|
-+---+---+---+
-| 42| 56| 69|
-+---+---+---+
-|  7|  8|  9|
-+---+---+---+
+  it "should show the result correctly for a non-trivial result" do
+    # this is not a solvable dimension
+    field = Field.new(3, [0, 0])
+    field.instance_variable_set(:@grid, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
+    StringResult.new(field).to_s.should == <<-END
++----+----+----+
+|   1|   2|   3|
++----+----+----+
+|  42|  56|  69|
++----+----+----+
+|   0|   0| 119|
++----+----+----+
     END
   end
 end

@@ -1,6 +1,11 @@
 = Knight's Tour
 
-A program that attempts to find a solution to the {Knight's Tour problem}[http://en.wikipedia.org/wiki/Knight%27s_Tour].
+A program that attempts to find a solution to the
+{Knight's Tour problem}[http://en.wikipedia.org/wiki/Knight%27s_Tour].
+I was inspired to do this by finding
+{a Python implementation}[http://ttsiodras.googlepages.com/knightstour.html].
+
+The current algorithm to solve the problem is trivial and slow.
 
 == Installation
 
@@ -10,9 +15,30 @@ Use git to get the latest version:
 
 == Usage
 
-Change the working directory of the command line shell into the project's root directory and enter
+Change the working directory of your command line shell into the project's root
+directory and enter
 
   $ ./bin/knights_tour
+
+If the program finds a solution, it displays a result similar to the following:
+
+  +---+---+---+---+---+---+---+---+
+  |  1| 38| 55| 34|  3| 36| 19| 22|
+  +---+---+---+---+---+---+---+---+
+  | 54| 47|  2| 37| 20| 23|  4| 17|
+  +---+---+---+---+---+---+---+---+
+  | 39| 56| 33| 46| 35| 18| 21| 10|
+  +---+---+---+---+---+---+---+---+
+  | 48| 53| 40| 57| 24| 11| 16|  5|
+  +---+---+---+---+---+---+---+---+
+  | 59| 32| 45| 52| 41| 26|  9| 12|
+  +---+---+---+---+---+---+---+---+
+  | 44| 49| 58| 25| 62| 15|  6| 27|
+  +---+---+---+---+---+---+---+---+
+  | 31| 60| 51| 42| 29|  8| 13| 64|
+  +---+---+---+---+---+---+---+---+
+  | 50| 43| 30| 61| 14| 63| 28|  7|
+  +---+---+---+---+---+---+---+---+
 
 For options, see
 

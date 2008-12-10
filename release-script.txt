@@ -1,0 +1,7 @@
+In order to make a release, do
+
+mate lib/knights_tour.rb		# update version number
+git commit -am "Bump to release-<version>."
+git tag release-<version>
+git push
+git push --tags

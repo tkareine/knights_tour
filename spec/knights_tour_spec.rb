@@ -105,17 +105,17 @@ describe Application do
   end
 
   it "should adhere to Warnsdorff's rule when sorting next positions" do
-    board = Board.new([5, 5], [0, 0])
+    board = Knight.new([5, 5], [0, 0])
     # broken board state, but it does not matter for testing
     board.instance_variable_set(
-      :@grid,
+      :@board,
       [ [  1,  0,  0, 12,  3 ],
         [  0, 11,  2,  7, 18 ],
         [  0,  0,  0,  0, 13 ],
         [ 10, 15,  6,  0,  8 ],
         [  0, 19,  9, 14,  5 ] ])
-    board.instance_variable_set(:@position, [1, 4])
-    board.instance_variable_set(:@num_steps, 18)
+    board.instance_variable_set(:@current_position, [1, 4])
+    board.instance_variable_set(:@steps_taken, 18)
     next_positions = board.find_next_positions_available
     next_positions.size.should == 3
     next_positions.should include([0, 2])
@@ -134,8 +134,8 @@ describe StringResult do
   end
 
   it "should show the result correctly for a trivial result" do
-    board = Board.new([1, 1], [0, 0])
-    board.instance_variable_set(:@grid, [[1]])
+    board = Knight.new([1, 1], [0, 0])
+    board.instance_variable_set(:@board, [[1]])
     result = StringResult.new(board)
     result.to_s.should == <<-END
 +--+
@@ -146,8 +146,9 @@ describe StringResult do
 
   it "should show the result correctly for a non-trivial result" do
     # in reality, this is not a solvable board size
-    board = Board.new([3, 3], [0, 0])
-    board.instance_variable_set(:@grid, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
+    board = Knight.new([3, 3], [0, 0])
+    board.instance_variable_set(:@board, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
+    board.instance_variable_set(:@steps_taken, 119)
     StringResult.new(board).to_s.should == <<-END
 +----+----+----+
 |   1|   2|   3|

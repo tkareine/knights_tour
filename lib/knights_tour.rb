@@ -30,8 +30,8 @@ module KnightsTour
 
     def solve
       unless @solution
-        board = Board.new(@board_size, @knight_starts_at)
-        @solution = StringResult.new(traverse(board))
+        knight = Knight.new(@board_size, @knight_starts_at)
+        @solution = StringResult.new(traverse(knight))
       end
       @solution
     end
@@ -67,30 +67,30 @@ module KnightsTour
       position
     end
 
-    # Traverse the board.
+    # Traverse the knight on the board.
     #
     # The algorithm is a recursive backtracking search for a first solution
     # to the problem. The board is copied and modified by moving the knight
     # to a new position in each recursive step of the algorithm, instead of
     # modifying a single shared board in place.
-    def traverse(board)
+    def traverse(knight)
       #$stdout.puts StringResult.new(board)  # debug
 
-      unless board.traversed?
-        next_positions = board.find_next_positions_available
+      unless knight.traversed?
+        next_positions = knight.find_next_positions_available
         # Optimization by trying the next positions in a specific order.
-        next_positions = order_by_warnsdorffs_rule(next_positions, board)
+        next_positions = order_by_warnsdorffs_rule(next_positions, knight)
         next_positions.each do |next_position|
-          new_board = traverse(board.dup.traverse_to(next_position))
+          new_knight = traverse(knight.dup.traverse_to(next_position))
 
-          unless new_board.nil?
-            return new_board  # return the first solution found
+          unless new_knight.nil?
+            return new_knight   # return the first solution found
           end
         end
 
         nil   # no solutions found
       else
-        board
+        knight
       end
     end
 
@@ -102,57 +102,58 @@ module KnightsTour
     # References:
     #   <http://mathworld.wolfram.com/KnightsTour.html>
     #   <http://web.telia.com/~u85905224/knight/eWarnsd.htm>
-    def order_by_warnsdorffs_rule(positions, board)
+    def order_by_warnsdorffs_rule(positions, knight)
       positions.sort_by do |position|
-        board.find_next_positions_available(position).size
+        knight.find_next_positions_available(position).size
       end
     end
   end
 
-  class Board
+  class Knight
     ## as [x, y] pairs
-    KNIGHTS_LEGAL_STEPS =
-        [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
-          [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
+    LEGAL_STEPS = [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
+                    [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
 
-    attr_reader :grid, :steps_taken
+    attr_reader :board, :steps_taken
 
-    def initialize(size, start_at)
-      @grid = Array.new(size[0]) { Array.new(size[1], 0) }
+    def initialize(board_size, start_at)
+      @board = Array.new(board_size[0]) { Array.new(board_size[1], 0) }
       @steps_taken = 0
       traverse_to(start_at)
     end
 
     def initialize_copy(other)
-      @grid = Marshal.load(Marshal.dump(other.grid))
+      @board = Marshal.load(Marshal.dump(other.board))
       @steps_taken = other.steps_taken
     end
 
     def traversed?
-      last_step = grid.size * grid[0].size
+      last_step = @board.size * @board[0].size
       @steps_taken == last_step
     end
 
     def traverse_to(new_position)
       @steps_taken += 1
-      @position = new_position
-      @grid[@position[0]][@position[1]] = @steps_taken
+      @current_position = new_position
+      @board[@current_position[0]][@current_position[1]] = @steps_taken
       self
     end
 
-    def find_next_positions_available(after_position = @position)
-      positions = KNIGHTS_LEGAL_STEPS.map do |step|
+    def find_next_positions_available(after_position = @current_position)
+      positions = LEGAL_STEPS.map do |step|
         position_after_step(after_position, step)
       end
-      positions.reject { |pos| pos.nil? || (@grid[pos[0]][pos[1]] > 0) }
+      positions.reject { |pos| pos.nil? || (@board[pos[0]][pos[1]] > 0) }
     end
+
+    private
 
     def position_after_step(from, step)
       x_pos = from[0] + step[0]
       y_pos = from[1] + step[1]
 
-      if (0...@grid.size).include?(x_pos) &&
-         (0...@grid[0].size).include?(y_pos)
+      if (0...@board.size).include?(x_pos) &&
+         (0...@board[0].size).include?(y_pos)
         [x_pos, y_pos]
       else
         nil
@@ -162,8 +163,8 @@ module KnightsTour
 
   class StringResult
     def initialize(result)
-      if result.is_a?(Board)
-        @result = grid_to_s(result.grid)
+      if result.is_a?(Knight)
+        @result = board_to_s(result.board, result.steps_taken)
       else
         @result = "No solution found."
       end
@@ -175,28 +176,23 @@ module KnightsTour
 
     private
 
-    def grid_to_s(grid)
-      square_width = find_last_step(grid).to_s.length + 1
-
-      separator_str = separator(square_width, grid[0].size)
+    def board_to_s(board, steps_taken)
+      square_width = steps_taken.to_s.length + 1
+      separator_str = separator(square_width, board[0].size)
 
       output = ""
 
-      grid.each do |row|
-        output += separator_str
+      board.each do |row|
+        output << separator_str
         row_output = row.map { |step| "%#{square_width}s" % step }.join("|")
-        output += "|#{row_output}|\n"
+        output << "|#{row_output}|\n"
       end
 
-      output += separator_str
+      output << separator_str
     end
 
     def separator(board_width, cols)
       ("+" << "-" * board_width) * cols << "+\n"
-    end
-
-    def find_last_step(grid)
-      grid.map { |row| row.max }.max
     end
   end
 end

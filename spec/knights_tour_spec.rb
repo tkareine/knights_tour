@@ -53,15 +53,15 @@ describe Application do
     result = Application.new(:size => [5, 5]).solve
     result.to_s.should == <<-END
 +---+---+---+---+---+
-|  1| 20| 17| 12|  3|
+|  1| 14|  9| 20|  3|
 +---+---+---+---+---+
-| 16| 11|  2|  7| 18|
+| 24| 19|  2| 15| 10|
 +---+---+---+---+---+
-| 21| 24| 19|  4| 13|
+| 13|  8| 25|  4| 21|
 +---+---+---+---+---+
-| 10| 15|  6| 23|  8|
+| 18| 23|  6| 11| 16|
 +---+---+---+---+---+
-| 25| 22|  9| 14|  5|
+|  7| 12| 17| 22|  5|
 +---+---+---+---+---+
     END
   end
@@ -103,6 +103,29 @@ describe Application do
     result << app.solve
     result[0].should == result[1]
   end
+
+  it "should adhere to Warnsdorff's rule when sorting next positions" do
+    board = Board.new([5, 5], [0, 0])
+    # broken board state, but it does not matter for testing
+    board.instance_variable_set(
+      :@grid,
+      [ [  1,  0,  0, 12,  3 ],
+        [  0, 11,  2,  7, 18 ],
+        [  0,  0,  0,  0, 13 ],
+        [ 10, 15,  6,  0,  8 ],
+        [  0, 19,  9, 14,  5 ] ])
+    board.instance_variable_set(:@position, [1, 4])
+    board.instance_variable_set(:@num_steps, 18)
+    next_positions = board.find_next_positions_available
+    next_positions.size.should == 3
+    next_positions.should include([0, 2])
+    next_positions.should include([2, 2])
+    next_positions.should include([3, 3])
+    next_positions.sort!  # ensure the order is not correct already
+    app = Application.new
+    next_positions = app.send(:order_by_warnsdorffs_rule, next_positions, board)
+    next_positions.should == [[3, 3], [2, 2], [0, 2]]
+  end
 end
 
 describe StringResult do
@@ -111,9 +134,9 @@ describe StringResult do
   end
 
   it "should show the result correctly for a trivial result" do
-    field = Field.new([1, 1], [0, 0])
-    field.instance_variable_set(:@grid, [[1]])
-    result = StringResult.new(field)
+    board = Board.new([1, 1], [0, 0])
+    board.instance_variable_set(:@grid, [[1]])
+    result = StringResult.new(board)
     result.to_s.should == <<-END
 +--+
 | 1|
@@ -123,9 +146,9 @@ describe StringResult do
 
   it "should show the result correctly for a non-trivial result" do
     # in reality, this is not a solvable board size
-    field = Field.new([3, 3], [0, 0])
-    field.instance_variable_set(:@grid, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
-    StringResult.new(field).to_s.should == <<-END
+    board = Board.new([3, 3], [0, 0])
+    board.instance_variable_set(:@grid, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
+    StringResult.new(board).to_s.should == <<-END
 +----+----+----+
 |   1|   2|   3|
 +----+----+----+

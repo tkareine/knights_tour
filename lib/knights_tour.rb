@@ -28,8 +28,8 @@ module KnightsTour
 
     def solve
       unless @solution
-        field = Field.new(@size, @start_at)
-        @solution = StringResult.new(traverse(field))
+        board = Board.new(@size, @start_at)
+        @solution = StringResult.new(traverse(board))
       end
       @solution
     end
@@ -65,28 +65,49 @@ module KnightsTour
       start_position
     end
 
-    def traverse(field)
-      #puts StringResult.new(field)  # debug
+    # Traverse the board.
+    #
+    # The algorithm is a recursive backtracking search for a first solution
+    # to the problem. The board is copied and modified by moving the knight
+    # to a new position in each recursive step of the algorithm, instead of
+    # modifying a single shared board in place.
+    def traverse(board)
+      #puts StringResult.new(board)  # debug
 
-      unless field.traversed?
-        next_positions = field.find_next_positions_available
-
+      unless board.traversed?
+        next_positions = board.find_next_positions_available
+        # Optimization by trying next positions in a specific order.
+        next_positions = order_by_warnsdorffs_rule(next_positions, board)
         next_positions.each do |next_position|
-          new_field = traverse(field.dup.traverse_to(next_position))
+          new_board = traverse(board.dup.traverse_to(next_position))
 
-          unless new_field.nil?
-            return new_field  # return the first solution found
+          unless new_board.nil?
+            return new_board  # return the first solution found
           end
         end
 
         nil   # no solutions found
       else
-        field
+        board
+      end
+    end
+
+    # Optimization by applying Warnsdorff's rule: attempt to avoid dead
+    # ends by favoring positions with the lowest number of next available
+    # positions (thus, isolated positions become visited first). The rule
+    # is heuristic.
+    #
+    # References:
+    #   <http://mathworld.wolfram.com/KnightsTour.html>
+    #   <http://web.telia.com/~u85905224/knight/eWarnsd.htm>
+    def order_by_warnsdorffs_rule(positions, board)
+      positions.sort_by do |position|
+        board.find_next_positions_available(position).size
       end
     end
   end
 
-  class Field
+  class Board
     ## as [x, y] pairs
     LEGAL_STEPS = [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
                     [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
@@ -116,8 +137,8 @@ module KnightsTour
       self
     end
 
-    def find_next_positions_available
-      positions = LEGAL_STEPS.map { |step| position_after_step(@position, step) }
+    def find_next_positions_available(after_position = @position)
+      positions = LEGAL_STEPS.map { |step| position_after_step(after_position, step) }
       positions.reject { |pos| pos.nil? || (@grid[pos[0]][pos[1]] > 0) }
     end
 
@@ -135,7 +156,7 @@ module KnightsTour
 
   class StringResult
     def initialize(result)
-      if result.is_a?(Field)
+      if result.is_a?(Board)
         @result = grid_to_s(result.grid)
       else
         @result = "No solution found."
@@ -149,23 +170,23 @@ module KnightsTour
     private
 
     def grid_to_s(grid)
-      field_width = find_last_step(grid).to_s.length + 1
+      board_width = find_last_step(grid).to_s.length + 1
 
-      separator_str = separator(field_width, grid[0].size)
+      separator_str = separator(board_width, grid[0].size)
 
       output = ""
 
       grid.each do |row|
         output += separator_str
-        row_output = row.map { |step| "%#{field_width}s" % step }.join("|")
+        row_output = row.map { |step| "%#{board_width}s" % step }.join("|")
         output += "|#{row_output}|\n"
       end
 
       output += separator_str
     end
 
-    def separator(field_width, cols)
-      ("+" + "-" * field_width) * cols + "+\n"
+    def separator(board_width, cols)
+      ("+" + "-" * board_width) * cols + "+\n"
     end
 
     def find_last_step(grid)

@@ -15,7 +15,7 @@ options = Trollop::options do
   version Meta.version
 
   banner <<-EOS
-A proram that attempts to find a solution to the Knight's Tour problem.
+A program that attempts to find a solution to the Knight's Tour problem.
 
 Usage:
 

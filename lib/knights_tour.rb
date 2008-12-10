@@ -2,7 +2,7 @@ module KnightsTour
   module Meta #:nodoc:
     module VERSION #:nodoc:
       MAJOR = 0
-      MINOR = 1
+      MINOR = 2
       TINY  = 0
 
       def self.to_s

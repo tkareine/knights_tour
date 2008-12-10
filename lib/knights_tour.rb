@@ -21,14 +21,16 @@ module KnightsTour
 
   class Application
     def initialize(params = {})
-      @size = parse_size(params[:size] || [8, 8])
-      @start_at = parse_start_position(params[:start_at] || [0, 0])
+      @board_size = parse_board_size(params[:size] || [8, 8])
+      @knight_starts_at = parse_position_on_board(
+          params[:start_at] || [0, 0],
+          @board_size)
       @solution = nil
     end
 
     def solve
       unless @solution
-        board = Board.new(@size, @start_at)
+        board = Board.new(@board_size, @knight_starts_at)
         @solution = StringResult.new(traverse(board))
       end
       @solution
@@ -43,7 +45,7 @@ module KnightsTour
       [param[0].to_i, param[1].to_i]
     end
 
-    def parse_size(size)
+    def parse_board_size(size)
       size = parse_pair(size)
       unless size[0] > 0 && size[1] > 0
         raise ArgumentError,
@@ -53,16 +55,16 @@ module KnightsTour
       size
     end
 
-    def parse_start_position(start_position)
-      start_position = parse_pair(start_position)
-      unless (0...@size[0]).include?(start_position[0]) &&
-             (0...@size[1]).include?(start_position[1])
+    def parse_position_on_board(position, board_size)
+      position = parse_pair(position)
+      unless (0...board_size[0]).include?(position[0]) &&
+             (0...board_size[1]).include?(position[1])
         raise ArgumentError,
-              "Initial position must be a pair of positive integers " \
-              "within the size limits of the board, separated by a comma " \
+              "Position must be a pair of positive integers within the " \
+              "size limits of the board, separated by a comma " \
               "(for example, 0,5 is acceptable for board size 6,6)"
       end
-      start_position
+      position
     end
 
     # Traverse the board.
@@ -72,7 +74,7 @@ module KnightsTour
     # to a new position in each recursive step of the algorithm, instead of
     # modifying a single shared board in place.
     def traverse(board)
-      #puts StringResult.new(board)  # debug
+      #$stdout.puts StringResult.new(board)  # debug
 
       unless board.traversed?
         next_positions = board.find_next_positions_available
@@ -170,15 +172,15 @@ module KnightsTour
     private
 
     def grid_to_s(grid)
-      board_width = find_last_step(grid).to_s.length + 1
+      square_width = find_last_step(grid).to_s.length + 1
 
-      separator_str = separator(board_width, grid[0].size)
+      separator_str = separator(square_width, grid[0].size)
 
       output = ""
 
       grid.each do |row|
         output += separator_str
-        row_output = row.map { |step| "%#{board_width}s" % step }.join("|")
+        row_output = row.map { |step| "%#{square_width}s" % step }.join("|")
         output += "|#{row_output}|\n"
       end
 
@@ -186,7 +188,7 @@ module KnightsTour
     end
 
     def separator(board_width, cols)
-      ("+" + "-" * board_width) * cols + "+\n"
+      ("+" << "-" * board_width) * cols << "+\n"
     end
 
     def find_last_step(grid)

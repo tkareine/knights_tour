@@ -78,7 +78,7 @@ module KnightsTour
 
       unless board.traversed?
         next_positions = board.find_next_positions_available
-        # Optimization by trying next positions in a specific order.
+        # Optimization by trying the next positions in a specific order.
         next_positions = order_by_warnsdorffs_rule(next_positions, board)
         next_positions.each do |next_position|
           new_board = traverse(board.dup.traverse_to(next_position))
@@ -111,36 +111,39 @@ module KnightsTour
 
   class Board
     ## as [x, y] pairs
-    LEGAL_STEPS = [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
-                    [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
+    KNIGHTS_LEGAL_STEPS =
+        [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
+          [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
 
-    attr_reader :grid, :num_steps
+    attr_reader :grid, :steps_taken
 
     def initialize(size, start_at)
       @grid = Array.new(size[0]) { Array.new(size[1], 0) }
-      @num_steps = 0
+      @steps_taken = 0
       traverse_to(start_at)
     end
 
     def initialize_copy(other)
       @grid = Marshal.load(Marshal.dump(other.grid))
-      @num_steps = other.num_steps
+      @steps_taken = other.steps_taken
     end
 
     def traversed?
       last_step = grid.size * grid[0].size
-      @num_steps == last_step
+      @steps_taken == last_step
     end
 
     def traverse_to(new_position)
-      @num_steps += 1
+      @steps_taken += 1
       @position = new_position
-      @grid[@position[0]][@position[1]] = @num_steps
+      @grid[@position[0]][@position[1]] = @steps_taken
       self
     end
 
     def find_next_positions_available(after_position = @position)
-      positions = LEGAL_STEPS.map { |step| position_after_step(after_position, step) }
+      positions = KNIGHTS_LEGAL_STEPS.map do |step|
+        position_after_step(after_position, step)
+      end
       positions.reject { |pos| pos.nil? || (@grid[pos[0]][pos[1]] > 0) }
     end
 
@@ -148,7 +151,8 @@ module KnightsTour
       x_pos = from[0] + step[0]
       y_pos = from[1] + step[1]
 
-      if (0...@grid.size).include?(x_pos) && (0...@grid[0].size).include?(y_pos)
+      if (0...@grid.size).include?(x_pos) &&
+         (0...@grid[0].size).include?(y_pos)
         [x_pos, y_pos]
       else
         nil

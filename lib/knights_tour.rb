@@ -79,15 +79,14 @@ module KnightsTour
       unless knight.traversed?
         next_positions = knight.find_next_positions
         next_positions.each do |next_position|
-          new_knight = traverse(knight.dup.traverse_to(next_position))
-          unless new_knight.nil?
-            return new_knight   # return the first solution found
+          knight = traverse(knight.dup.traverse_to(next_position))
+          unless knight.nil?
+            return knight   # return the first solution found
           end
         end
-        nil   # no solutions found
-      else
-        knight
       end
+
+      knight  # no solutions found, or already found
     end
   end
 

@@ -79,7 +79,7 @@ module KnightsTour
       unless knight.traversed?
         next_positions = knight.find_next_positions_available
         # Optimization by trying the next positions in a specific order.
-        next_positions = order_by_warnsdorffs_rule(next_positions, knight)
+        next_positions = sort_by_warnsdorffs_rule(next_positions, knight)
         next_positions.each do |next_position|
           new_knight = traverse(knight.dup.traverse_to(next_position))
 
@@ -102,7 +102,7 @@ module KnightsTour
     # References:
     #   <http://mathworld.wolfram.com/KnightsTour.html>
     #   <http://web.telia.com/~u85905224/knight/eWarnsd.htm>
-    def order_by_warnsdorffs_rule(positions, knight)
+    def sort_by_warnsdorffs_rule(positions, knight)
       positions.sort_by do |position|
         knight.find_next_positions_available(position).size
       end

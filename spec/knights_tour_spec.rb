@@ -123,7 +123,7 @@ describe Application do
     next_positions.should include([3, 3])
     next_positions.sort!  # ensure the order is not correct already
     app = Application.new
-    next_positions = app.send(:order_by_warnsdorffs_rule, next_positions, board)
+    next_positions = app.send(:sort_by_warnsdorffs_rule, next_positions, board)
     next_positions.should == [[3, 3], [2, 2], [0, 2]]
   end
 end

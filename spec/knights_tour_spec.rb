@@ -5,7 +5,7 @@ require 'knights_tour'
 include KnightsTour
 
 describe Application do
-  it "should accept valid board size" do
+  it "should accept valid non-default board size" do
     lambda { Application.new(:size => -1)  }.should raise_error(ArgumentError)
     lambda { Application.new(:size => 0)   }.should raise_error(ArgumentError)
     lambda { Application.new(:size => 1)   }.should raise_error(ArgumentError)
@@ -103,28 +103,40 @@ describe Application do
     result << app.solve
     result[0].should == result[1]
   end
+end
 
-  it "should adhere to Warnsdorff's rule when sorting next positions" do
-    board = Knight.new([5, 5], [0, 0])
+describe Knight do
+  before(:each) do
+    @knight = Knight.new([5, 5], [0, 0])
     # broken board state, but it does not matter for testing
-    board.instance_variable_set(
+    @knight.instance_variable_set(
       :@board,
       [ [  1,  0,  0, 12,  3 ],
         [  0, 11,  2,  7, 18 ],
         [  0,  0,  0,  0, 13 ],
         [ 10, 15,  6,  0,  8 ],
         [  0, 19,  9, 14,  5 ] ])
-    board.instance_variable_set(:@current_position, [1, 4])
-    board.instance_variable_set(:@steps_taken, 18)
-    next_positions = board.find_next_positions_available
-    next_positions.size.should == 3
-    next_positions.should include([0, 2])
-    next_positions.should include([2, 2])
-    next_positions.should include([3, 3])
+    @knight.instance_variable_set(:@current_position, [1, 4])
+    @knight.instance_variable_set(:@steps_taken, 18)
+  end
+
+  it "should find next positions available" do
+    next_positions = @knight.send(:find_next_positions_at, @knight.current_position)
     next_positions.sort!  # ensure the order is not correct already
-    app = Application.new
-    next_positions = app.send(:sort_by_warnsdorffs_rule, next_positions, board)
-    next_positions.should == [[3, 3], [2, 2], [0, 2]]
+    next_positions.should == [ [0, 2], [2, 2], [3, 3] ]
+  end
+
+  it "should sort next positions by Warnsdorff's heuristics" do
+    next_positions = @knight.send(:find_next_positions_at, @knight.current_position)
+    next_positions.sort!  # ensure the order is not correct already
+    next_positions.should == [ [0, 2], [2, 2], [3, 3] ]
+    next_positions = @knight.send(:sort_by_warnsdorffs_heuristics, next_positions)
+    next_positions.should == [ [3, 3], [2, 2], [0, 2] ]
+  end
+
+  it "should find next positions, sorted" do
+    next_positions = @knight.find_next_positions
+    next_positions.should == [ [3, 3], [2, 2], [0, 2] ]
   end
 end
 
@@ -134,9 +146,9 @@ describe StringResult do
   end
 
   it "should show the result correctly for a trivial result" do
-    board = Knight.new([1, 1], [0, 0])
-    board.instance_variable_set(:@board, [[1]])
-    result = StringResult.new(board)
+    knight = Knight.new([1, 1], [0, 0])
+    knight.instance_variable_set(:@board, [[1]])
+    result = StringResult.new(knight)
     result.to_s.should == <<-END
 +--+
 | 1|
@@ -146,10 +158,10 @@ describe StringResult do
 
   it "should show the result correctly for a non-trivial result" do
     # in reality, this is not a solvable board size
-    board = Knight.new([3, 3], [0, 0])
-    board.instance_variable_set(:@board, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
-    board.instance_variable_set(:@steps_taken, 119)
-    StringResult.new(board).to_s.should == <<-END
+    knight = Knight.new([3, 3], [0, 0])
+    knight.instance_variable_set(:@board, [[1, 2, 3], [42, 56, 69], [0, 0, 119]])
+    knight.instance_variable_set(:@steps_taken, 119)
+    StringResult.new(knight).to_s.should == <<-END
 +----+----+----+
 |   1|   2|   3|
 +----+----+----+

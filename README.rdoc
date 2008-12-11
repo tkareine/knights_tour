@@ -5,10 +5,10 @@ A program that attempts to find a solution to the
 I was inspired to do this by finding
 {a Python implementation}[http://ttsiodras.googlepages.com/knightstour.html].
 
-The program's algorithm is a recursive backtracking search for a first
-solution to the problem. It utilizes {Warnsdorff's
-rule}[http://mathworld.wolfram.com/KnightsTour.html] as heuristics in order
-to avoid dead ends in the search.
+The program's algorithm is a recursive backtracking search that returns the
+first solution to the problem if the algorithm finds one. It utilizes
+{Warnsdorff's heuristics}[http://mathworld.wolfram.com/KnightsTour.html] to
+avoid dead ends, making the search faster in general.
 
 == Installation
 

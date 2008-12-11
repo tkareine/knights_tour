@@ -77,34 +77,16 @@ module KnightsTour
       #$stdout.puts StringResult.new(board)  # debug
 
       unless knight.traversed?
-        next_positions = knight.find_next_positions_available
-        # Optimization by trying the next positions in a specific order.
-        next_positions = sort_by_warnsdorffs_rule(next_positions, knight)
+        next_positions = knight.find_next_positions
         next_positions.each do |next_position|
           new_knight = traverse(knight.dup.traverse_to(next_position))
-
           unless new_knight.nil?
             return new_knight   # return the first solution found
           end
         end
-
         nil   # no solutions found
       else
         knight
-      end
-    end
-
-    # Optimization by applying Warnsdorff's rule: attempt to avoid dead
-    # ends by favoring positions with the lowest number of next available
-    # positions (thus, isolated positions become visited first). The rule
-    # is heuristic.
-    #
-    # References:
-    #   <http://mathworld.wolfram.com/KnightsTour.html>
-    #   <http://web.telia.com/~u85905224/knight/eWarnsd.htm>
-    def sort_by_warnsdorffs_rule(positions, knight)
-      positions.sort_by do |position|
-        knight.find_next_positions_available(position).size
       end
     end
   end
@@ -114,7 +96,7 @@ module KnightsTour
     LEGAL_STEPS = [ [-2,  1], [-1,  2], [ 1,  2], [ 2,  1],
                     [ 2, -1], [ 1, -2], [-1, -2], [-2, -1] ]
 
-    attr_reader :board, :steps_taken
+    attr_reader :board, :steps_taken, :current_position
 
     def initialize(board_size, start_at)
       @board = Array.new(board_size[0]) { Array.new(board_size[1], 0) }
@@ -139,14 +121,31 @@ module KnightsTour
       self
     end
 
-    def find_next_positions_available(after_position = @current_position)
-      positions = LEGAL_STEPS.map do |step|
-        position_after_step(after_position, step)
-      end
-      positions.reject { |pos| pos.nil? || (@board[pos[0]][pos[1]] > 0) }
+    def find_next_positions
+      sort_by_warnsdorffs_heuristics(find_next_positions_at(@current_position))
     end
 
     private
+
+    # Optimization by applying Warnsdorff's heuristics: attempt to avoid
+    # dead ends by favoring positions with the lowest number of next
+    # available positions (thus, isolated positions become visited first).
+    #
+    # References:
+    #   <http://mathworld.wolfram.com/KnightsTour.html>
+    #   <http://web.telia.com/~u85905224/knight/eWarnsd.htm>
+    def sort_by_warnsdorffs_heuristics(positions)
+      positions.sort_by do |position|
+        find_next_positions_at(position).size
+      end
+    end
+
+    def find_next_positions_at(position)
+      positions = LEGAL_STEPS.map do |step|
+        position_after_step(position, step)
+      end
+      positions.reject { |pos| pos.nil? || (@board[pos[0]][pos[1]] > 0) }
+    end
 
     def position_after_step(from, step)
       x_pos = from[0] + step[0]

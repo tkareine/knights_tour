@@ -6,7 +6,7 @@ I was inspired to do this by finding
 {a Python implementation}[http://ttsiodras.googlepages.com/knightstour.html].
 
 The program's algorithm is a recursive backtracking search that returns the
-first solution to the problem if the algorithm finds one. It utilizes
+first solution to the problem (if the algorithm finds one). It utilizes
 {Warnsdorff's heuristics}[http://mathworld.wolfram.com/KnightsTour.html] to
 avoid dead ends, making the search faster in general.
 

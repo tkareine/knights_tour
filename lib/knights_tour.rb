@@ -25,15 +25,11 @@ module KnightsTour
       @knight_starts_at = parse_position_on_board(
           params[:start_at] || [0, 0],
           @board_size)
-      @solution = nil
     end
 
     def solve
-      unless @solution
-        knight = Knight.new(@board_size, @knight_starts_at)
-        @solution = StringResult.new(traverse(knight))
-      end
-      @solution
+      @solution ||= StringResult.new(traverse(
+                      Knight.new(@board_size, @knight_starts_at)))
     end
 
     private
@@ -86,7 +82,7 @@ module KnightsTour
         end
       end
 
-      knight  # no solutions found, or already found
+      knight  # no solutions found, or already found one
     end
   end
 

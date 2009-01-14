@@ -1,6 +1,4 @@
-$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
-
-require 'knights_tour'
+require File.dirname(__FILE__) << "/../lib/knights_tour"
 
 include KnightsTour
 

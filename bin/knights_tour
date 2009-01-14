@@ -1,11 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
-require 'trollop'
-
-$LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
-
-require 'knights_tour'
+require "rubygems"
+require "trollop"
+require File.dirname(__FILE__) << "/../lib/knights_tour"
 
 # Parse the command line arguments and invoke the application.
 

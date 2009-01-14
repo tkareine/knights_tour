@@ -6,13 +6,13 @@ module KnightsTour
       TINY  = 4
 
       def self.to_s
-        [ MAJOR, MINOR, TINY ].join('.')
+        [ MAJOR, MINOR, TINY ].join(".")
       end
     end
 
-    COPYRIGHT = 'Copyright (c) Tuomas Kareinen'
+    COPYRIGHT = "Copyright (c) Tuomas Kareinen"
 
-    LICENSE = 'Licensed under the terms of the "MIT license". See README.rdoc.'
+    LICENSE = "Licensed under the terms of the \"MIT license\". See README.rdoc."
 
     def self.version
       "#{File.basename($0)} #{Meta::VERSION}\n#{Meta::COPYRIGHT}\n#{Meta::LICENSE}"
@@ -36,7 +36,7 @@ module KnightsTour
 
     def parse_pair(param)
       unless param.is_a?(Array)
-        param = param.to_s.split(',')
+        param = param.to_s.split(",")
       end
       [param[0].to_i, param[1].to_i]
     end

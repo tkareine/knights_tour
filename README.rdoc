@@ -20,10 +20,9 @@ The software is compatible with Ruby 1.9.1.
 
 == Usage
 
-Change the working directory of your command line shell into the project's
-root directory and enter
+Enter
 
-  $ ./bin/knights_tour
+  $ knights_tour
 
 The command attempts to solve the problem on a board of size 8x8, the knight
 located initially at position 0,0 (the top-left corner). If the program
@@ -47,10 +46,10 @@ finds a solution, it displays a result similar to the following:
   | 52| 17| 20|  9| 56| 47| 22|  7|
   +---+---+---+---+---+---+---+---+
 
-The size of the board and the start position of the knight are configurable.
-For all the options, see
+The size of the board and the start position of the knight are configurable,
+however. For all the options, see
 
-  $ ./bin/knights_tour -h
+  $ knights_tour -h
 
 == Contacting
 

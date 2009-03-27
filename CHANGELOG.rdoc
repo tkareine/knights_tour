@@ -1,0 +1,24 @@
+=== 0.2.5 released 2009-01-14
+
+* Small code beautifications.
+
+=== 0.2.4 released 2008-12-10
+
+* Small code optimization.
+
+=== 0.2.3 released 2008-12-11
+
+* Small documentation improvements.
+* Refactored code.
+
+=== 0.2.2 released 2008-12-10
+
+* Small socumentation improvements.
+
+=== 0.2.1 released 2008-12-10
+
+* Refactored code.
+
+=== 0.2.0 released 2008-12-10
+
+* First revision that solves the problem correctly. :)

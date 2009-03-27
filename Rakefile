@@ -1,16 +1,19 @@
 require "rubygems"
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "knights_tour"
-    gem.summary = %Q{A program that attempts to find a solution to the Knight's Tour problem.}
-    gem.email = "tkareine@gmail.com"
-    gem.homepage = "http://github.com/tuomas/knights_tour"
-    gem.authors = ["Tuomas Kareinen"]
-  end
-rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+require "hoe"
+require "./lib/knights_tour"
+Hoe.new("knights_tour", KnightsTour::Meta::VERSION.to_s) do |p|
+  p.author = "Tuomas Kareinen"
+  p.email = "tkareine@gmail.com"
+  p.url = "http://github.com/tuomas/knights_tour"
+  p.summary =<<-END
+A program that attempts to find a solution to the Knight's Tour problem.
+  END
+  p.readme_file = "README.rdoc"
+  p.history_file = "CHANGELOG.rdoc"
+  p.extra_rdoc_files = FileList["*.rdoc", "lib/**/*.rb"]
+  p.extra_dev_deps = %w(rspec)
+  p.rubyforge_name = "searchable-rec"
 end
 
 require "rake/rdoctask"

@@ -2,8 +2,8 @@ module KnightsTour
   module Meta #:nodoc:
     module VERSION #:nodoc:
       MAJOR = 0
-      MINOR = 2
-      PATCH = 5
+      MINOR = 3
+      PATCH = 0
 
       def self.to_s
         [ MAJOR, MINOR, PATCH ].join(".")

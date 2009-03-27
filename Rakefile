@@ -12,7 +12,8 @@ A program that attempts to find a solution to the Knight's Tour problem.
   p.readme_file = "README.rdoc"
   p.history_file = "CHANGELOG.rdoc"
   p.extra_rdoc_files = FileList["*.rdoc", "lib/**/*.rb"]
-  p.extra_dev_deps = %w(rspec)
+  p.extra_deps = [["trollop", ">= 1.10.0"]]
+  p.extra_dev_deps = [["rspec", ">= 1.2.0"]]
   p.rubyforge_name = "searchable-rec"
 end
 

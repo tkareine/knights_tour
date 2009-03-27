@@ -12,11 +12,11 @@ avoid dead ends, making the search faster in general.
 
 == Installation
 
-Use git to get the latest version:
+Install the software as a RubyGem from GitHub:
 
-  $ git clone git://github.com/tuomas/knights_tour.git
+  $ sudo gem install tuomas-knights_tour --source http://gems.github.com
 
-Ruby gem "trollop" is required to be installed in order to run the program.
+The software is compatible with Ruby 1.9.1.
 
 == Usage
 
@@ -61,7 +61,7 @@ com >.
 
 This software is licensed under the terms of the "MIT license":
 
-Copyright (c) 2008 Tuomas Kareinen.
+Copyright (c) 2008-2009 Tuomas Kareinen.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to

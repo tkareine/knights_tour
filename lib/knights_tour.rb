@@ -3,10 +3,10 @@ module KnightsTour
     module VERSION #:nodoc:
       MAJOR = 0
       MINOR = 2
-      TINY  = 5
+      PATCH = 5
 
       def self.to_s
-        [ MAJOR, MINOR, TINY ].join(".")
+        [ MAJOR, MINOR, PATCH ].join(".")
       end
     end
 

@@ -18,7 +18,6 @@ A program that attempts to find a solution to the Knight's Tour problem.
 end
 
 require "rake/rdoctask"
-require "lib/knights_tour"
 desc "Create documentation."
 Rake::RDocTask.new(:rdoc) do |rd|
   rd.title = "Knight's Tour #{KnightsTour::Meta::VERSION}"

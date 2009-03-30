@@ -12,11 +12,11 @@ avoid dead ends, making the search faster in general.
 
 == Installation
 
-Install the software as a RubyGem from GitHub:
+Install Knight's Tour as a RubyGem from GitHub:
 
   $ sudo gem install tuomas-knights_tour --source http://gems.github.com
 
-The software is compatible with Ruby 1.9.1.
+The program is compatible with Ruby 1.9.1.
 
 == Usage
 
@@ -45,6 +45,10 @@ finds a solution, it displays a result similar to the following:
   +---+---+---+---+---+---+---+---+
   | 52| 17| 20|  9| 56| 47| 22|  7|
   +---+---+---+---+---+---+---+---+
+
+The command above is the same as invoking the program with
+
+  $ knights_tour -s 0,0 8,8
 
 The size of the board and the start position of the knight are configurable,
 however. For all the options, see

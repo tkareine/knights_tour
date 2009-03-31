@@ -56,6 +56,8 @@ desc "Run specs"
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList["spec/**/*.rb"]
   t.spec_opts = ["--format", "specdoc"]
+  t.rcov = true
+  t.rcov_opts = ["--exclude", "spec"]
   #t.warning = true
 end
 

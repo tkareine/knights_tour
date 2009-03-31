@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{knights_tour}
-  s.version = "0.3.1"
+  s.version = "0.3.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tuomas Kareinen"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = ["lib/knights_tour.rb", "bin/knights_tour", "CHANGELOG.rdoc", "README.rdoc", "spec/knights_tour_spec.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/tuomas/knights_tour}
-  s.rdoc_options = ["--title", "Knight's Tour 0.3.1", "--main", "README.rdoc", "--exclude", "spec", "--line-numbers"]
+  s.rdoc_options = ["--title", "Knight's Tour 0.3.2", "--main", "README.rdoc", "--exclude", "spec", "--line-numbers"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
   s.summary = %q{Solves Knight's Tour problem.}

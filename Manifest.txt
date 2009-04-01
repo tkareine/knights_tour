@@ -1,7 +1,0 @@
-CHANGELOG.rdoc
-Manifest.txt
-README.rdoc
-Rakefile
-bin/knights_tour
-lib/knights_tour.rb
-spec/knights_tour_spec.rb

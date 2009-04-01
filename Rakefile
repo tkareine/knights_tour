@@ -1,6 +1,7 @@
 require "rubygems"
-
 require "lib/knights_tour"
+
+require "rake/clean"
 
 require "rake/gempackagetask"
 spec = Gem::Specification.new do |s|

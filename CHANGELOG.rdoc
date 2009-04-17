@@ -1,7 +1,7 @@
 === 0.3.3 released 2009-04-17
 
 * Added missing Rakefile to the distribution gem.
-* Removed rspec as a depencency gem.
+* Removed rspec as a dependency gem.
 
 === 0.3.2 released 2009-03-31
 

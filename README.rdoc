@@ -20,7 +20,7 @@ The program is compatible with Ruby 1.9.1.
 
 == Usage
 
-Enter
+In the command line, run the program by entering
 
   $ knights_tour
 

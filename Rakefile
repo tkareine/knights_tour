@@ -67,7 +67,7 @@ end
 require "spec/rake/spectask"
 desc "Run specs"
 Spec::Rake::SpecTask.new(:spec) do |t|
-  t.spec_files = FileList["spec/**/*.rb"]
+  t.spec_files = FileList["spec/**/*_spec.rb"]
   t.spec_opts = ["--colour --format progress --loadby mtime"]
   t.warning = true
   t.libs << "lib"
@@ -78,6 +78,7 @@ Spec::Rake::SpecTask.new(:rcov) do |t|
   t.spec_files = FileList["spec/**/*.rb"]
   t.rcov = true
   t.rcov_opts = ["--exclude", "spec"]
+  t.libs << "lib"
 end
 
 desc "Find code smells"

@@ -52,8 +52,6 @@ module KnightsTour
     # to a new position in each recursive step of the algorithm, instead of
     # modifying a single shared board in place.
     def traverse(knight)
-      #$stdout.puts StringResult.new(board)  # debug
-
       unless knight.traversed?
         next_positions = knight.find_next_positions
         next_positions.each do |next_position|

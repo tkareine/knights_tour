@@ -37,4 +37,4 @@ rescue ArgumentError => e
   Trollop::die e.to_s
 end
 
-$stdout.puts app.solve
+puts app.solve

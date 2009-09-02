@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-require "rubygems"
 require "trollop"
-require File.dirname(__FILE__) << "/../lib/knights_tour"
+require "knights_tour"
 
 # Parse the command line arguments and invoke the application.
 

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) << "/../lib/knights_tour"
+require "knights_tour"
 
 include KnightsTour
 

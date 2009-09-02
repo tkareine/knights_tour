@@ -1,8 +1,10 @@
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "lib"))
+
 require "rubygems"
 
 full_name = "Knight's Tour"
 package_name = "knights_tour"
-require "lib/#{package_name}"
+require "#{package_name}"
 version = KnightsTour::VERSION
 
 require "rake/clean"
@@ -68,6 +70,7 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList["spec/**/*.rb"]
   t.spec_opts = ["--colour --format progress --loadby mtime"]
   t.warning = true
+  t.libs << "lib"
 end
 
 desc "Run specs with RCov"

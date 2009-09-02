@@ -87,7 +87,7 @@ end
 
 desc "Search unfinished parts of source code"
 task :todo do
-  FileList["**/*.rb"].egrep /#.*(TODO|FIXME)/
+  FileList["**/*.rb", "**/*.rdoc", "**/*.txt"].egrep /(TODO|FIXME)/
 end
 
 task :default => :spec

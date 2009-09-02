@@ -1,7 +1,7 @@
 In order to release, do
 
-mate lib/knights_tour.rb                # update version number
-mate CHANGELOG.rdoc                     # describe changes
+$EDITOR lib/knights_tour.rb             # update version number
+$EDITOR CHANGELOG.rdoc                  # describe changes
 rake gemspec                            # update the gemspec
 git diff                                # review the changes
 git commit -am "Bump to release-<version>."

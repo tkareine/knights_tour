@@ -9,7 +9,7 @@ require File.dirname(__FILE__) << "/../lib/knights_tour"
 include KnightsTour
 
 options = Trollop::options do
-  version Meta.version
+  version "#{File.basename($0)} #{VERSION}"
 
   banner <<-EOS
 A program that attempts to find a solution to the Knight's Tour problem.

@@ -2,10 +2,8 @@ require "rubygems"
 
 full_name = "Knight's Tour"
 package_name = "knights_tour"
-
 require "lib/#{package_name}"
-
-version = KnightsTour::Meta::VERSION.to_s
+version = KnightsTour::VERSION
 
 require "rake/clean"
 

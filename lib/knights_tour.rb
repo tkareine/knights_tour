@@ -1,23 +1,5 @@
 module KnightsTour
-  module Meta #:nodoc:
-    module VERSION #:nodoc:
-      MAJOR = 0
-      MINOR = 3
-      PATCH = 3
-
-      def self.to_s
-        [ MAJOR, MINOR, PATCH ].join(".")
-      end
-    end
-
-    COPYRIGHT = "Copyright (c) Tuomas Kareinen"
-
-    LICENSE = "Licensed under the terms of the \"MIT license\". See README.rdoc."
-
-    def self.version
-      "#{File.basename($0)} #{Meta::VERSION}\n#{Meta::COPYRIGHT}\n#{Meta::LICENSE}"
-    end
-  end
+  VERSION = "0.3.3"
 
   class Application
     def initialize(params = {})

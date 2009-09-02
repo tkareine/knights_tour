@@ -1,3 +1,8 @@
+=== 0.3.4 released 2009-09-03
+
+* Slight documentation improvements.
+* Removed dependencies to Rubygems.
+
 === 0.3.3 released 2009-04-17
 
 * Added missing Rakefile to the distribution gem.

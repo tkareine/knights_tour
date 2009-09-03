@@ -2,7 +2,7 @@ require "knights_tour"
 
 include KnightsTour
 
-describe Application do
+describe KnightsTour::Application do
   it "should accept valid non-default board size" do
     lambda { Application.new(:size => -1)  }.should raise_error(ArgumentError)
     lambda { Application.new(:size => 0)   }.should raise_error(ArgumentError)
@@ -103,7 +103,7 @@ describe Application do
   end
 end
 
-describe Knight do
+describe KnightsTour::Knight do
   before(:each) do
     @knight = Knight.new([5, 5], [0, 0])
     # broken board state, but it does not matter for testing
@@ -138,7 +138,7 @@ describe Knight do
   end
 end
 
-describe StringResult do
+describe KnightsTour::StringResult do
   it "should show the result correctly for a failed result" do
     StringResult.new(nil).to_s.should == "No solution found."
   end

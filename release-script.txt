@@ -4,7 +4,7 @@ $EDITOR lib/knights_tour.rb             # update version number
 $EDITOR CHANGELOG.rdoc                  # describe changes
 rake gemspec                            # update the gemspec
 git diff                                # review the changes
-git commit -am "Bump to release-<version>."
+git commit -am "Bump to release-<version>"
 git tag release-<version>
 git push
 git push --tags

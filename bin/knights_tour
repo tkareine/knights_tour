@@ -8,7 +8,7 @@ require "knights_tour"
 include KnightsTour
 
 options = Trollop::options do
-  version "#{File.basename($0)} #{VERSION}"
+  version "#{File.basename($0)} #{KnightsTour::VERSION}"
 
   banner <<-EOS
 A program that attempts to find a solution to the Knight's Tour problem.

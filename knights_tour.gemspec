@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{knights_tour}
-  s.version = "0.3.4"
+  s.version = "0.3.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tuomas Kareinen"]
-  s.date = %q{2009-09-03}
+  s.date = %q{2009-09-16}
   s.default_executable = %q{knights_tour}
   s.description = %q{A program that attempts to find a solution to the Knight's Tour problem.}
   s.email = %q{tkareine@gmail.com}
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["MIT-LICENSE.txt", "CHANGELOG.rdoc", "README.rdoc"]
   s.files = ["Rakefile", "MIT-LICENSE.txt", "CHANGELOG.rdoc", "README.rdoc", "bin/knights_tour", "lib/knights_tour.rb", "spec/knights_tour_spec.rb"]
   s.homepage = %q{http://github.com/tuomas/knights_tour}
-  s.rdoc_options = ["--title", "Knight's Tour 0.3.4", "--main", "README.rdoc", "--exclude", "spec", "--line-numbers"]
+  s.rdoc_options = ["--title", "Knight's Tour 0.3.5", "--main", "README.rdoc", "--exclude", "spec", "--line-numbers"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Solves Knight's Tour problem.}

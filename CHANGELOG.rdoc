@@ -1,3 +1,7 @@
+=== 0.3.5 released 2009-09-16
+
+* Display proper version info on Ruby 1.8 when using option "-v".
+
 === 0.3.4 released 2009-09-03
 
 * Slight documentation improvements.

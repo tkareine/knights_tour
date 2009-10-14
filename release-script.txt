@@ -8,3 +8,5 @@ git commit -am "Bump to release-<version>"
 git tag release-<version>
 git push
 git push --tags
+rake gem
+gem push pkg/knights_tour-<version>.gem

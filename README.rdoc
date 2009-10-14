@@ -12,11 +12,11 @@ avoid dead ends, making the search faster in general.
 
 == Installation
 
-Install Knight's Tour as a RubyGem from GitHub:
+Install Knight's Tour as a RubyGem from Gemcutter:
 
-  $ sudo gem install tuomas-knights_tour --source http://gems.github.com
+  $ sudo gem install knights_tour --source http://gemcutter.org
 
-The program is compatible with Ruby 1.9.1.
+The program is compatible with both Ruby 1.8 and 1.9.
 
 == Usage
 

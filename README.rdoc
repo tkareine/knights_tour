@@ -12,7 +12,7 @@ avoid dead ends, making the search faster in general.
 
 == Installation
 
-Install Knight's Tour as a RubyGem from Gemcutter:
+Install Knight's Tour as a RubyGem from Gemcutter[http://gemcutter.org/]:
 
   $ sudo gem install knights_tour --source http://gemcutter.org
 

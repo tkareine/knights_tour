@@ -1,12 +1,11 @@
 In order to release, do
 
 $EDITOR lib/knights_tour.rb             # update version number
-$EDITOR CHANGELOG.rdoc                  # describe changes
+$EDITOR CHANGELOG.rdoc                  # describe history summary
 rake gemspec                            # update the gemspec
 git diff                                # review the changes
 git commit -am "Bump to release-<version>"
 git tag release-<version>
-git push
-git push --tags
+git push --tags origin master
 rake gem
 gem push pkg/knights_tour-<version>.gem

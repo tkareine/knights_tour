@@ -13,14 +13,13 @@ require "rake/gempackagetask"
 spec = Gem::Specification.new do |s|
   s.name = package_name
   s.version = version
-  s.homepage = "http://github.com/tuomas/knights_tour"
+  s.homepage = "https://github.com/tkareine/knights_tour"
   s.summary = "Solves Knight's Tour problem."
   s.description = "A program that attempts to find a solution to the Knight's Tour problem."
 
   s.author = "Tuomas Kareinen"
   s.email = "tkareine@gmail.com"
 
-  s.platform = Gem::Platform::RUBY
   s.files = FileList["Rakefile", "MIT-LICENSE.txt", "*.rdoc", "bin/**/*", "lib/**/*", "spec/**/*"].to_a
   s.executables = ["knights_tour"]
 
